@@ -4,28 +4,28 @@ using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using Microsoft.Azure.WebJobs.Extensions.Kafka;
 using System.Threading;
+using Microsoft.Extensions.Configuration;
 
 namespace App.Functions.Kafka
 {
-    public static class KafkaFunctions
+    public class KafkaFunctions
     {
 
         [FunctionName("kafkaApp")]
-        public static void ConfluentCloudStringTrigger(
+        public void ConfluentCloudStringTrigger(
              [KafkaTrigger(
-                "pkc-lgwgm.eastus2.azure.confluent.cloud:9092",
+                "KafkaBrokerUrl",
                 "users",
                 ConsumerGroup = "cg-01",
                 Protocol = BrokerProtocol.SaslSsl,
                 AuthenticationMode = BrokerAuthenticationMode.Plain,
-                Username = "RZVIIWXNXVKXBX3X",
-                Password = "A1lGUniNmhMW0P1FHZzSjRKL169WHguEOIWJTF1/4mZu8LNNag9GIfHkMRWcoOy+",
+                Username = "KafkaUsername",
+                Password = "KafkaPassword",
                 SslCaLocation = "confluent_cloud_cacert.pem")]
             KafkaEventData<string> kafkaEvent,
             ILogger logger)
-            {
-                logger.LogInformation(kafkaEvent.Value.ToString());
-            }
-
+        {
+            logger.LogInformation(kafkaEvent.Value.ToString());
+        }
     }
 }
