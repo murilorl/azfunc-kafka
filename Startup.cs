@@ -4,6 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 using System.IO;
 using System.Reflection;
 
+using App.Data;
+using App.Settings;
+using App.Services;
+
 [assembly: FunctionsStartup(typeof(App.Core.Startup))]
 namespace App.Core
 {
@@ -17,6 +21,10 @@ namespace App.Core
                 .AddUserSecrets(Assembly.GetExecutingAssembly(), false)
                 .AddEnvironmentVariables()
                 .Build();
+
+            builder.Services.Configure<CosmosDbSettings>(config.GetSection("CosmosDb"));
+            builder.Services.AddScoped<ICosmosService, CosmosService>();
+            builder.Services.AddScoped<IMaterialService, MaterialService>();
         }
     }
 }

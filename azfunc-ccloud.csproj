@@ -7,6 +7,7 @@
     <UserSecretsId>2fc8b2b9-6397-4ae8-bb3a-e8027a764f0d</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.8.0" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Kafka" Version="2.0.0-beta" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.6" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.0.0" />
