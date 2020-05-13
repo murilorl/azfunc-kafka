@@ -1,24 +1,16 @@
-using System;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Host;
-using Microsoft.Extensions.Logging;
 using Microsoft.Azure.WebJobs.Extensions.Kafka;
-using System.Threading;
-using Microsoft.Extensions.Configuration;
-using System.Text.Json;
-using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 using App.Services;
-using App.Model;
 
 namespace App.Functions.Kafka
 {
-
     public class KafkaFunctions
     {
-
         private readonly IMaterialService _materialService;
         public KafkaFunctions(IMaterialService materialService)
         {
@@ -40,13 +32,17 @@ namespace App.Functions.Kafka
             ILogger logger)
         {
             string kafkaEventValue = kafkaEvent.Value.ToString();
-            logger.LogInformation(kafkaEventValue);
 
-            JObject obj = JObject.Parse(kafkaEventValue);
-            logger.LogInformation(obj.ToString());
-            //Material material = JsonSerializer.Deserialize<Material>(kafkaEventValue);
-
-            _materialService.AddAsync(obj);
+            try
+            {
+                JObject obj = JObject.Parse(kafkaEventValue);
+                _materialService.AddAsync(obj);
+            }
+            catch (JsonReaderException ex)
+            {
+                //TODO: add retries and handle the commit of the Kafka event
+                logger.LogError(ex, "The Kafka event value [{kafkaEventValue}] is not valid");
+            }
         }
     }
 }

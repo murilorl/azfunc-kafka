@@ -2,6 +2,7 @@ using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
+
 using System.Reflection;
 
 using App.Data;
@@ -25,6 +26,6 @@ namespace App.Core
             builder.Services.Configure<CosmosDbSettings>(config.GetSection("CosmosDb"));
             builder.Services.AddScoped<ICosmosService, CosmosService>();
             builder.Services.AddScoped<IMaterialService, MaterialService>();
-        }
+       }
     }
 }
